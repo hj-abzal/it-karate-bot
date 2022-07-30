@@ -15,44 +15,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api"));
 const mongoose_1 = __importDefault(require("mongoose"));
-const checkIsAdmin_1 = require("./auth/helpers/checkIsAdmin");
+const express_1 = __importDefault(require("express"));
+const http_1 = __importDefault(require("http"));
+const config_1 = require("./ikb-1-main/config");
+const startCommandHandler_1 = require("./ikb-2-features/f-1-auth/a-1-commandHandlers/startCommandHandler");
+const app_1 = require("./ikb-1-main/app");
+const routes_1 = require("./ikb-1-main/routes");
 dotenv_1.default.config();
-const bot = new node_telegram_bot_api_1.default(process.env.TOKEN, { polling: true });
-const start = () => {
+const app = (0, express_1.default)();
+(0, app_1.appUse)(app);
+(0, routes_1.routes)(app);
+const server = http_1.default.createServer(app);
+const startBot = () => {
+    const bot = new node_telegram_bot_api_1.default(config_1.TelegramToken, { polling: true });
     bot.setMyCommands([
-        { command: '/start', description: 'Вернет ваш id' },
+        { command: '/click_me', description: 'Попробуйте :)' },
         { command: '/get_lessons', description: 'Получить открытые уроки' },
     ]).then();
     bot.on('message', (msg) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(msg);
         const command = msg.text;
-        const chatId = msg.chat.id;
+        const chatID = msg.chat.id;
         const studentID = msg.from.id;
-        if (command === '/start') {
-            yield bot.sendMessage(chatId, `Cообщите админу ваш ID:`);
-            return bot.sendMessage(chatId, studentID.toString());
+        const username = msg.from.username;
+        const config = { chatID, studentID, username };
+        switch (command) {
+            case '/start':
+                return (0, startCommandHandler_1.startCommandHandler)(bot, config);
+            default:
+                return bot.sendMessage(chatID, 'Не понятный запрос. Попробуйте через меню!');
         }
-        if (command === '/admin' && (0, checkIsAdmin_1.checkIsAdmin)(studentID)) {
-            const text = `admin scripts: 
-            /addStudent /deleteStudent 
-            /editStudent /deleteStudent
-            `;
-            return bot.sendMessage(chatId, text);
-        }
-        if (command === '/addStudent') {
-            return yield bot.sendMessage(chatId, 'Введите ID:', {
-                reply_markup: {
-                    remove_keyboard: true
-                }
-            });
-        }
-        return bot.sendMessage(chatId, 'Не понятный запрос. Попробуйте через меню!');
     }));
 };
-mongoose_1.default.connect(process.env.MONGODB_URL)
+mongoose_1.default.connect(config_1.MongoDBUris)
     .then(() => {
     console.log('MongoDB connected successfully');
-    start();
+    const port = process.env.PORT || config_1.PORT;
+    server.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
+        console.log('listening on port: ' + port);
+    }));
+    startBot();
 })
     .catch(e => console.log('MongoDB connection error: ', Object.assign({}, e)));
 //# sourceMappingURL=index.js.map
