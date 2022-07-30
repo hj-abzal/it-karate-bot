@@ -29,11 +29,13 @@ const server = http_1.default.createServer(app);
 const startBot = () => {
     const bot = new node_telegram_bot_api_1.default(config_1.TelegramToken, { polling: true });
     bot.setMyCommands([
-        { command: '/click_me', description: 'Попробуйте :)' },
+        { command: '/start', description: 'Попробуйте :)' },
         { command: '/get_lessons', description: 'Получить открытые уроки' },
     ]).then();
     bot.on('message', (msg) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(msg);
+        //TODO getter of needed fields
+        //TODO metric count of req
         const command = msg.text;
         const chatID = msg.chat.id;
         const studentID = msg.from.id;

@@ -18,12 +18,13 @@ const server = http.createServer(app);
 const startBot = () => {
         const bot = new TelegramBot(TelegramToken, {polling: true});
         bot.setMyCommands([
-            {command: '/click_me', description: 'Попробуйте :)'},
+            {command: '/start', description: 'Попробуйте :)'},
             {command: '/get_lessons', description: 'Получить открытые уроки'},
         ]).then();
         bot.on('message', async (msg: Message) => {
             console.log(msg);
-
+            //TODO getter of needed fields
+            //TODO metric count of req
             const command = msg.text;
             const chatID = msg.chat.id;
             const studentID = msg.from!.id;
