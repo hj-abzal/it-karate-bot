@@ -18,9 +18,10 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const express_1 = __importDefault(require("express"));
 const http_1 = __importDefault(require("http"));
 const config_1 = require("./ikb-1-main/config");
-const startCommandHandler_1 = require("./ikb-2-features/f-1-auth/a-1-commandHandlers/startCommandHandler");
 const app_1 = require("./ikb-1-main/app");
 const routes_1 = require("./ikb-1-main/routes");
+const botController_1 = require("./ikb-1-main/botController");
+const botCommands_1 = require("./ikb-1-main/botCommands");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 (0, app_1.appUse)(app);
@@ -28,26 +29,8 @@ const app = (0, express_1.default)();
 const server = http_1.default.createServer(app);
 const startBot = () => {
     const bot = new node_telegram_bot_api_1.default(config_1.TelegramToken, { polling: true });
-    bot.setMyCommands([
-        { command: '/start', description: 'Попробуйте :)' },
-        { command: '/get_lessons', description: 'Получить открытые уроки' },
-    ]).then();
-    bot.on('message', (msg) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(msg);
-        //TODO getter of needed fields
-        //TODO metric count of req
-        const command = msg.text;
-        const chatID = msg.chat.id;
-        const studentID = msg.from.id;
-        const username = msg.from.username;
-        const config = { chatID, studentID, username };
-        switch (command) {
-            case '/start':
-                return (0, startCommandHandler_1.startCommandHandler)(bot, config);
-            default:
-                return bot.sendMessage(chatID, 'Не понятный запрос. Попробуйте через меню!');
-        }
-    }));
+    (0, botCommands_1.botCommands)(bot);
+    (0, botController_1.botController)(bot);
 };
 mongoose_1.default.connect(config_1.MongoDBUris)
     .then(() => {
@@ -55,8 +38,8 @@ mongoose_1.default.connect(config_1.MongoDBUris)
     const port = process.env.PORT || config_1.PORT;
     server.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
         console.log('listening on port: ' + port);
+        startBot();
     }));
-    startBot();
 })
     .catch(e => console.log('MongoDB connection error: ', Object.assign({}, e)));
 //# sourceMappingURL=index.js.map
