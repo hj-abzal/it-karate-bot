@@ -25,7 +25,7 @@ export const createUser = async (req: Request, res: Response) => {
                         last_name,
                         username,
                         range: 'white',
-                        level: 0,
+                        level: 1,
                     }
                 );
                 res.status(201).json({user});
