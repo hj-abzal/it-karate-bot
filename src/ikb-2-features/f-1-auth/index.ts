@@ -6,9 +6,9 @@ import {deleteUser} from './a-0-controllers/deleteUser';
 
 const auth = express.Router();
 
-auth.get('/users', getAllUsers)
-auth.post("/users", createUser);
-auth.put("/users", updateUser);
-auth.delete("/users", deleteUser);
+auth.get('/get-all', getAllUsers)
+auth.post("/create-user", createUser);
+auth.put("/update-user", updateUser);
+auth.delete("/delete-user", deleteUser);
 
 export default auth;

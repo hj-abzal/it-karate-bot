@@ -10,15 +10,16 @@ export const botController = (bot: TelegramBot) => {
         if (command === '/start') {
             return startCommandHandler(bot, config, user);
         }
-        await bot.sendMessage(1071927152,'Tried my bot: @${config.username}')
         if (!user) {
             //TODO: keep chat id in db and send me this message
+            await bot.sendMessage(1071927152, `Tried my bot: @${config.username}`);
             console.log(`Tried my bot: @${config.username}`);
-            return bot.sendMessage(config.chatID, 'Не авторизованный пользыватель!');
+            return bot.sendMessage(config.chatID, 'Не авторизованный пользователь!');
         }
 
         switch (command) {
             case '/get_lessons':
+
             default:
                 return bot.sendMessage(config.chatID, 'Не понятный запрос. Попробуйте через меню!');
         }
