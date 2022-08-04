@@ -35,9 +35,8 @@ const startBot = () => {
 mongoose_1.default.connect(config_1.MongoDBUris)
     .then(() => {
     console.log('MongoDB connected successfully');
-    const port = process.env.PORT || config_1.PORT;
-    server.listen(port, () => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('listening on port: ' + port);
+    server.listen(config_1.PORT, () => __awaiter(void 0, void 0, void 0, function* () {
+        console.log('listening on port: ' + config_1.PORT);
         startBot();
     }));
 })
