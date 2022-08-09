@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import User, {IUser} from '../a-2-models/user';
 
+
 export const createUser = async (req: Request, res: Response) => {
     const {
         uuid,
