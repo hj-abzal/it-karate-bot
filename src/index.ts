@@ -10,7 +10,6 @@ import {botController} from './ikb-1-main/botController';
 import {botCommands} from './ikb-1-main/botCommands';
 
 dotenv.config();
-
 const app = express();
 appUse(app);
 routes(app);
