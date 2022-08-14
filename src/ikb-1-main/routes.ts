@@ -1,10 +1,12 @@
 import {Express, Request, Response} from 'express';
 import auth from '../ikb-2-features/f-1-auth';
 import lessons from '../ikb-2-features/f-2-lessons';
+import send from '../ikb-2-features/f-3-message';
 
 export const routes = (app: Express) => {
     app.use("/auth", auth);
     app.use("/lessons", lessons);
+    app.use("/send", send);
 
     // ping endpoint
     app.use("/ping", (req: Request, res: Response) => {

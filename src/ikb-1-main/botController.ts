@@ -5,6 +5,7 @@ import {getLessonsCommandHandler} from '../ikb-2-features/f-2-lessons/l-1-comman
 import Lesson, {ILesson} from '../ikb-2-features/f-2-lessons/l-2-models/lessons';
 import {IUser} from '../ikb-2-features/f-1-auth/a-2-models/user';
 import {createLessonsMessage} from '../ikb-2-features/f-2-lessons/l-3-helpers/createLessonsMessage';
+import {updateChatId} from '../ikb-2-features/f-1-auth/a-3-helpers/updateChatId';
 
 export const botController = (bot: TelegramBot) => {
     bot.on('message', async (msg: Message) => {
@@ -15,11 +16,12 @@ export const botController = (bot: TelegramBot) => {
             return startCommandHandler(bot, config, user);
         }
         if (!user) {
-            //TODO: keep chat id in db and send me this message
             await bot.sendMessage(1071927152, `Tried my bot: @${config.username}`);
             console.log(`Tried my bot: @${config.username}`);
             return bot.sendMessage(config.chatID, 'Не авторизованный пользователь!');
         }
+
+        await updateChatId(user, config.chatID, bot);
 
         switch (command) {
             case '/get_lessons':

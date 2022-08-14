@@ -10,28 +10,30 @@ import {botController} from './ikb-1-main/botController';
 import {botCommands} from './ikb-1-main/botCommands';
 
 dotenv.config();
-const app = express();
-appUse(app);
-routes(app);
 
-const server = http.createServer(app);
+export const bot = new TelegramBot(TelegramToken, {polling: true});
 
 const startBot = () => {
-    const bot = new TelegramBot(TelegramToken, {polling: true});
+    const app = express();
+
+    appUse(app);
+    routes(app);
+
+    const server = http.createServer(app);
 
     botCommands(bot);
     botController(bot);
+
+    mongoose.connect(MongoDBUris)
+        .then(() => {
+            console.log('MongoDB connected successfully');
+
+            server.listen(PORT, async () => {
+                console.log('listening on port: ' + PORT);
+            });
+        })
+        .catch(e => console.log('MongoDB connection error: ', {...e}));
 };
 
-mongoose.connect(MongoDBUris)
-    .then(() => {
-        console.log('MongoDB connected successfully');
-
-        server.listen(PORT, async () => {
-            console.log('listening on port: ' + PORT);
-            startBot();
-        });
-    })
-    .catch(e => console.log('MongoDB connection error: ', {...e}));
-
+startBot();
 
