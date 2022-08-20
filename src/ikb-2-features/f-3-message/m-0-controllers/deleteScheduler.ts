@@ -8,6 +8,7 @@ export const deleteScheduler = async (req: Request, res: Response) => {
     try {
         const message =await ScheduledMessage.findOneAndDelete({_id}).exec();
         scheduler.setScheduledMessages();
+
         res.status(200).json({deleted: message});
     } catch (e) {
         res.status(500).json({

@@ -18,6 +18,7 @@ export const updateScheduler = async (req: Request, res: Response) => {
             {new: true}
         ).exec();
         scheduler.setScheduledMessages();
+
         res.status(200).json({updated});
 
     } catch (e) {
