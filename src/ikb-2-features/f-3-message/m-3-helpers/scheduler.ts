@@ -9,6 +9,7 @@ export class Scheduler {
     }
 
     public setScheduledMessages() {
+        console.log('setScheduledMessages');
         setTimeout(async () => {
             const scheduledMessages: any = await ScheduledMessage.find().exec();
             if (scheduledMessages) {
@@ -21,12 +22,15 @@ export class Scheduler {
         setInterval(() => {
             this.scheduledMessages.map(async s => {
                 if (s.time === this.time()) {
+                    console.log('heeeee');
                     this.sendMessages(s.usersIDs, s.message);
                     if (!s.isRepeated) {
                         await ScheduledMessage.findByIdAndDelete(s._id);
+                        this.scheduledMessages.filter((el) => el._id !== s._id)
                     }
                 }
             });
+            console.log(this.time());
         }, 1000);
     };
 

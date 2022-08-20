@@ -4,6 +4,7 @@ import {scheduler} from '../../../index';
 
 
 export const createScheduler = async (req: Request, res: Response) => {
+    console.log('createScheduler');
     const {
         title,
         time,
