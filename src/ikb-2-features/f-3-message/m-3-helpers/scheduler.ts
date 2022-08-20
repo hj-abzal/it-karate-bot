@@ -10,7 +10,6 @@ export class Scheduler {
     }
 
     public setScheduledMessages() {
-        console.log('setScheduledMessages');
         setTimeout(async () => {
             const scheduledMessages: any = await ScheduledMessage.find().exec();
             if (scheduledMessages) {
@@ -20,10 +19,10 @@ export class Scheduler {
     }
 
     public start(): void {
+        console.log('createScheduler started!');
         setInterval(() => {
             this.scheduledMessages.map(async s => {
                 if (s.time === this.time()) {
-                    console.log('heeeee');
                     this.sendMessages(s.usersIDs, s.message);
                     if (!s.isRepeated) {
                         await ScheduledMessage.findByIdAndDelete(s._id);
@@ -31,7 +30,7 @@ export class Scheduler {
                     }
                 }
             });
-            console.log(this.time());
+            // console.log(this.time());
         }, 1000);
     };
 

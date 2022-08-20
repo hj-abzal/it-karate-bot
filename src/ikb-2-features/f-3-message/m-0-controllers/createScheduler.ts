@@ -5,7 +5,6 @@ import {addZeroIfNeeded} from '../m-3-helpers/addZeroIfNeeded';
 
 
 export const createScheduler = async (req: Request, res: Response) => {
-    console.log('createScheduler');
     const {
         title,
         time,
