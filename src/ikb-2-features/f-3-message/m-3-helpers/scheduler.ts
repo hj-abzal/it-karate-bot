@@ -1,5 +1,6 @@
 import {sendMessage} from './sendMessage';
 import ScheduledMessage, {IScheduledMessage} from '../m-2-models/scheduledMessage';
+import {addZeroIfNeeded} from './addZeroIfNeeded';
 
 export class Scheduler {
     public scheduledMessages: IScheduledMessage[] = [];
@@ -41,17 +42,10 @@ export class Scheduler {
     }
 
     private time(): string {
-        const minutes = this.addZeroIfNeeded(new Date().getMinutes());
-        const hours = this.addZeroIfNeeded(new Date().getHours());
-        const seconds = this.addZeroIfNeeded(new Date().getSeconds());
+        const minutes = addZeroIfNeeded(new Date().getMinutes());
+        const hours = addZeroIfNeeded(new Date().getHours());
+        const seconds = addZeroIfNeeded(new Date().getSeconds());
 
         return `${hours}:${minutes}:${seconds}`;
     };
-
-    private addZeroIfNeeded(n: number): number | string {
-        if (n.toString().length === 1) {
-            return `0${n}`;
-        }
-        return n;
-    }
 }

@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import ScheduleMessage, {IScheduledMessage} from '../m-2-models/scheduledMessage';
 import {scheduler} from '../../../index';
+import {addZeroIfNeeded} from '../m-3-helpers/addZeroIfNeeded';
 
 
 export const createScheduler = async (req: Request, res: Response) => {
@@ -28,9 +29,10 @@ export const createScheduler = async (req: Request, res: Response) => {
         });
     }
     try {
+
         const scheduledMessage: IScheduledMessage = await ScheduleMessage.create(
             {
-                title,
+                title: checkIfProduction(title),
                 time,
                 message,
                 isRepeated,
@@ -47,3 +49,14 @@ export const createScheduler = async (req: Request, res: Response) => {
         });
     }
 };
+
+
+const checkIfProduction = (title: string): string => {
+    let res = title;
+    if (process.env.NODE_ENV === 'production') {
+        const [h, m, s] = title.split(':')
+        const changeHours = Number(h) + 6
+        res = `${addZeroIfNeeded(changeHours)}:${m}:${s}`
+    }
+    return res;
+}
