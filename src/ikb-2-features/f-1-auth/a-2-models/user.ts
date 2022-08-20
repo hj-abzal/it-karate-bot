@@ -2,7 +2,6 @@ import mongoose, {Document, Schema} from 'mongoose';
 
 export interface IUser extends Document {
     _id: mongoose.Types.ObjectId;
-    chatID: number;
     uuid: number;
     isAdmin: boolean;
     first_name: string;
@@ -14,10 +13,6 @@ export interface IUser extends Document {
 
 const UserSchema: Schema = new Schema(
     {
-        chatID: {
-            type: Number,
-            uniq: true
-        },
         uuid: {
             type: Number,
             required: true,

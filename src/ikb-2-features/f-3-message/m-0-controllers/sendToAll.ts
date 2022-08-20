@@ -8,7 +8,7 @@ export const sendToAll = async (req: Request, res: Response) => {
     } = req.body;
     const informed: string[] = [];
     try {
-        const users: IUser[] | null = await User.find({chatID: {$ne: undefined}}).exec();
+        const users: IUser[] | null = await User.find().exec();
         if (!users)
             res.status(400).json({
                 error: 'No users found',
@@ -17,7 +17,7 @@ export const sendToAll = async (req: Request, res: Response) => {
         else {
             users.map( async (u) => {
                 informed.push(u.first_name)
-                await sendMessage(u.chatID, message);
+                await sendMessage(u.uuid, message);
             })
             res.status(200).json({message, informed});
         }

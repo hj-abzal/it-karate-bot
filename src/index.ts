@@ -8,10 +8,12 @@ import {appUse} from './ikb-1-main/app';
 import {routes} from './ikb-1-main/routes';
 import {botController} from './ikb-1-main/botController';
 import {botCommands} from './ikb-1-main/botCommands';
+import {Scheduler} from './ikb-2-features/f-3-message/m-3-helpers/scheduler';
 
 dotenv.config();
 
 export const bot = new TelegramBot(TelegramToken, {polling: true});
+export const scheduler = new Scheduler();
 
 const startBot = () => {
     const app = express();
@@ -23,6 +25,7 @@ const startBot = () => {
 
     botCommands(bot);
     botController(bot);
+    scheduler.start();
 
     mongoose.connect(MongoDBUris)
         .then(() => {
