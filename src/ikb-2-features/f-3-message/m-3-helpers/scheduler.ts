@@ -19,11 +19,15 @@ export class Scheduler {
 
     public start(): void {
         setInterval(() => {
-            this.scheduledMessages.map(s => {
+            this.scheduledMessages.map(async s => {
                 if (s.time === this.time()) {
                     this.sendMessages(s.usersIDs, s.message);
+                    if (!s.isRepeated) {
+                        await ScheduledMessage.findByIdAndDelete(s._id);
+                    }
                 }
             });
+            console.log(this.time());
         }, 1000);
     };
 

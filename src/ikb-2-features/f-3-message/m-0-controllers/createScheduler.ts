@@ -9,6 +9,7 @@ export const createScheduler = async (req: Request, res: Response) => {
         time,
         message,
         usersIDs,
+        isRepeated
     } = req.body;
 
     if (!title || !time || !message || !usersIDs) {
@@ -31,6 +32,7 @@ export const createScheduler = async (req: Request, res: Response) => {
                 title,
                 time,
                 message,
+                isRepeated,
                 usersIDs,
             }
         );

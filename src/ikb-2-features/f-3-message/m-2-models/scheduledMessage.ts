@@ -5,6 +5,7 @@ export interface IScheduledMessage extends Document {
     title: string;
     time: string;
     message: string;
+    isRepeated: boolean;
     usersIDs: number[];
 }
 
@@ -20,6 +21,10 @@ const ScheduledMessageSchema: Schema = new Schema(
         },
         message: {
             type: String,
+            required: true
+        },
+        isRepeated: {
+            type: Boolean,
             required: true
         },
         usersIDs: {
