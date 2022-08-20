@@ -27,7 +27,6 @@ export class Scheduler {
                     }
                 }
             });
-            console.log(this.time());
         }, 1000);
     };
 
