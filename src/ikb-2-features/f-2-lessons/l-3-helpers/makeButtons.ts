@@ -2,7 +2,7 @@ const COLLS_COUNT_IN_ROW  = 3
 const makeButtons = (count: number) => {
     const res: any[] = [];
     let temp: any[] = [];
-    for (let i = 1; i <= count; i++) {
+    for (let i = 0; i <= count; i++) {
         const instance = {text: `Урок ${i}`, callback_data: i};
         temp.push(instance);
 
