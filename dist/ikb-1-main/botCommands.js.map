@@ -1,1 +1,0 @@
-{"version":3,"file":"botCommands.js","sourceRoot":"","sources":["../../src/ikb-1-main/botCommands.ts"],"names":[],"mappings":";;;AAEO,MAAM,WAAW,GAAG,CAAC,GAAgB,EAAE,EAAE;IAC5C,GAAG,CAAC,aAAa,CAAC;QACd,EAAC,OAAO,EAAE,QAAQ,EAAE,WAAW,EAAE,eAAe,EAAC;QACjD,EAAC,OAAO,EAAE,cAAc,EAAE,WAAW,EAAE,yBAAyB,EAAC;KACpE,CAAC,CAAC,IAAI,EAAE,CAAC;AACd,CAAC,CAAA;AALY,QAAA,WAAW,eAKvB"}
