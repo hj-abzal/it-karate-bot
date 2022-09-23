@@ -7,7 +7,9 @@
     "dev": "set NODE_ENV=development && nodemon dist/index.js",
     "dev:linux": "NODE_ENV=development nodemon dist/index.js",
     "start": "NODE_ENV=production node dist/index.js",
-    "watch": "tsc -w"
+    "start:render": "node dist/index.js",
+    "watch": "tsc -w",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
