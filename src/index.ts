@@ -1,42 +1,31 @@
-import dotenv from 'dotenv';
-import TelegramBot from 'node-telegram-bot-api';
-import mongoose from 'mongoose';
 import express from 'express';
-import http from 'http';
-import {MongoDBUris, PORT, TelegramToken} from './ikb-1-main/config';
-import {appUse} from './ikb-1-main/app';
-import {routes} from './ikb-1-main/routes';
-import {botController} from './ikb-1-main/botController';
-import {botCommands} from './ikb-1-main/botCommands';
-import {Scheduler} from './ikb-2-features/f-3-message/m-3-helpers/scheduler';
+import mongoose from 'mongoose';
+import {MongoDBUris, PORT} from './cnb-1-main/config';
+import {appUse} from './cnb-1-main/app';
+import {routes} from './cnb-1-main/routes';
 
-dotenv.config();
+const app = express();
 
-export const bot = new TelegramBot(TelegramToken, {polling: true});
-export const scheduler = new Scheduler();
+appUse(app);
+routes(app);
 
-const startBot = () => {
-    const app = express();
+mongoose.connect(MongoDBUris, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
+})
+    .then(() => {
+        console.log("MongoDB connected successfully");
 
-    appUse(app);
-    routes(app);
+        const port = process.env.PORT || PORT;
 
-    const server = http.createServer(app);
+        app.listen(port, async() => {
+            console.log("Products-back 1.0 listening on port: " + port);
+        });
+    })
+    .catch(e => console.log("MongoDB connection error: ", {...e}));
 
-    botCommands(bot);
-    botController(bot);
-    scheduler.start();
-
-    mongoose.connect(MongoDBUris)
-        .then(() => {
-            console.log('MongoDB connected successfully');
-
-            server.listen(PORT, async () => {
-                console.log('listening on port: ' + PORT);
-            });
-        })
-        .catch(e => console.log('MongoDB connection error: ', {...e}));
-};
-
-startBot();
-
+process.on("unhandledRejection", (reason, p) => {
+    console.log("unhandledRejection: ", reason, p);
+});
